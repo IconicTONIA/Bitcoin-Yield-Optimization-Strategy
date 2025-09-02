@@ -250,3 +250,20 @@
     assigned-at: uint
   }
 )
+
+;; Upgradability and Versioning
+(define-data-var contract-version uint u2)
+(define-data-var upgrade-timestamp uint u0)
+
+;; Staking and Rewards Mechanism
+(define-map staking-rewards
+  {
+    user: principal,
+    platform-id: uint
+  }
+  {
+    total-staked: uint,
+    reward-rate: uint,
+    last-claim-time: uint
+  }
+)
