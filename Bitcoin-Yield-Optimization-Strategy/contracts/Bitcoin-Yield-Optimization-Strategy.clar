@@ -290,3 +290,33 @@
     fee-percentage: uint
   }
 )
+
+;; Liquidation Protection
+(define-map liquidation-protection
+  { user: principal }
+  {
+    protection-amount: uint,
+    expires-at: uint
+  }
+)
+
+;; Whitelisting Function
+(define-public (add-to-whitelist
+  (user principal)
+  (kyc-level uint)
+)
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    
+    (map-set user-whitelist 
+      { user: user }
+      {
+        is-verified: true,
+        kyc-level: kyc-level,
+        verification-timestamp: stacks-block-height
+      }
+    )
+    
+    (ok true)
+  )
+)
