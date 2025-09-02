@@ -320,3 +320,27 @@
     (ok true)
   )
 )
+
+;; Liquidation Protection Purchase
+(define-public (purchase-liquidation-protection
+  (protection-amount uint)
+  (duration uint)
+)
+  (begin
+    (try! (stx-transfer? 
+      protection-amount 
+      tx-sender 
+      (as-contract tx-sender)
+    ))
+    
+    (map-set liquidation-protection
+      { user: tx-sender }
+      {
+        protection-amount: protection-amount,
+        expires-at: (+ stacks-block-height duration)
+      }
+    )
+    
+    (ok true)
+  )
+)
